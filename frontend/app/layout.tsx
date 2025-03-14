@@ -8,7 +8,7 @@ import { AppLayout } from "@/components/app-layout";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Social Media Automation",
+  title: "Smart People Choice",
   description: "Schedule and automate your social media posts",
 };
 
@@ -32,3 +32,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+import "./globals.css";
