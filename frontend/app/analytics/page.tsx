@@ -1,11 +1,32 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { BarChart, Download, Heart, MessageSquare, Repeat2, Twitter, Linkedin, MessageCircle } from "lucide-react"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  BarChart,
+  Download,
+  Heart,
+  MessageSquare,
+  Repeat2,
+  Twitter,
+  Linkedin,
+  MessageCircle,
+} from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   AreaChart,
   Area,
@@ -20,25 +41,25 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 
 export default function Analytics() {
-  const [mounted, setMounted] = useState(false)
-  const [timeframe, setTimeframe] = useState("7days")
-  const [activeTab, setActiveTab] = useState("engagement")
-  const [isLoading, setIsLoading] = useState(true)
+  const [mounted, setMounted] = useState(false);
+  const [timeframe, setTimeframe] = useState("7days");
+  const [activeTab, setActiveTab] = useState("engagement");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setMounted(true)
+    setMounted(true);
     // Simulate loading for chart data
     const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 1000)
-    return () => clearTimeout(timer)
-  }, [])
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   if (!mounted) {
-    return null
+    return null;
   }
 
   return (
@@ -46,16 +67,18 @@ export default function Analytics() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 animate-fade-in-down">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Analytics</h1>
-          <p className="text-muted-foreground">Track your social media performance across platforms.</p>
+          <p className="text-muted-foreground">
+            Track your social media performance across platforms.
+          </p>
         </div>
         <div className="flex gap-2 w-full sm:w-auto">
           <Select
             defaultValue="7days"
             value={timeframe}
             onValueChange={(value) => {
-              setTimeframe(value)
-              setIsLoading(true)
-              setTimeout(() => setIsLoading(false), 800)
+              setTimeframe(value);
+              setIsLoading(true);
+              setTimeout(() => setIsLoading(false), 800);
             }}
           >
             <SelectTrigger className="w-[180px] animated-button">
@@ -79,12 +102,18 @@ export default function Analytics() {
         {metrics.map((metric, i) => (
           <Card key={i} className="animated-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{metric.name}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {metric.name}
+              </CardTitle>
               <metric.icon className="h-4 w-4 text-muted-foreground animated-icon hover-scale" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{metric.value}</div>
-              <p className={`text-xs ${metric.change > 0 ? "text-green-500" : "text-red-500"}`}>
+              <p
+                className={`text-xs ${
+                  metric.change > 0 ? "text-green-500" : "text-red-500"
+                }`}
+              >
                 {metric.change > 0 ? "+" : ""}
                 {metric.change}% from last period
               </p>
@@ -105,9 +134,23 @@ export default function Analytics() {
                       }}
                     >
                       <defs>
-                        <linearGradient id={`color${i}`} x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8} />
-                          <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                        <linearGradient
+                          id={`color${i}`}
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                        >
+                          <stop
+                            offset="5%"
+                            stopColor="hsl(var(--primary))"
+                            stopOpacity={0.8}
+                          />
+                          <stop
+                            offset="95%"
+                            stopColor="hsl(var(--primary))"
+                            stopOpacity={0}
+                          />
                         </linearGradient>
                       </defs>
                       <Area
@@ -132,9 +175,9 @@ export default function Analytics() {
         className="w-full animate-fade-in"
         value={activeTab}
         onValueChange={(value) => {
-          setActiveTab(value)
-          setIsLoading(true)
-          setTimeout(() => setIsLoading(false), 800)
+          setActiveTab(value);
+          setIsLoading(true);
+          setTimeout(() => setIsLoading(false), 800);
         }}
       >
         <TabsList className="grid w-full grid-cols-3 mb-4">
@@ -153,7 +196,9 @@ export default function Analytics() {
           <Card className="animated-card">
             <CardHeader>
               <CardTitle>Engagement Overview</CardTitle>
-              <CardDescription>Track likes, comments, and shares across all platforms.</CardDescription>
+              <CardDescription>
+                Track likes, comments, and shares across all platforms.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="h-[400px]">
@@ -173,31 +218,40 @@ export default function Analytics() {
                       }}
                     >
                       <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="date" angle={-45} textAnchor="end" height={60} />
+                      <XAxis
+                        dataKey="date"
+                        angle={-45}
+                        textAnchor="end"
+                        height={60}
+                      />
                       <YAxis />
                       <Tooltip
                         contentStyle={{
                           backgroundColor: "hsl(var(--background))",
                           borderColor: "hsl(var(--border))",
                           borderRadius: "var(--radius)",
-                          boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+                          boxShadow:
+                            "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
                         }}
                       />
                       <Legend />
-                      <Bar dataKey="likes" fill="hsl(var(--primary))" name="Likes" animationDuration={1500} />
+                      <Bar
+                        dataKey="likes"
+                        fill="hsl(var(--primary))"
+                        name="Likes"
+                        animationDuration={1500}
+                      />
                       <Bar
                         dataKey="comments"
                         fill="#82ca9d"
                         name="Comments"
                         animationDuration={1500}
-                        animationDelay={300}
                       />
                       <Bar
                         dataKey="shares"
                         fill="#ffc658"
                         name="Shares"
                         animationDuration={1500}
-                        animationDelay={600}
                       />
                     </RechartsBarChart>
                   </ResponsiveContainer>
@@ -212,7 +266,9 @@ export default function Analytics() {
             <Card className="animated-card">
               <CardHeader>
                 <CardTitle>Platform Distribution</CardTitle>
-                <CardDescription>Engagement distribution across platforms.</CardDescription>
+                <CardDescription>
+                  Engagement distribution across platforms.
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="h-[300px]">
@@ -231,7 +287,9 @@ export default function Analytics() {
                           outerRadius={100}
                           fill="#8884d8"
                           dataKey="value"
-                          label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                          label={({ name, percent }) =>
+                            `${name} ${(percent * 100).toFixed(0)}%`
+                          }
                           animationDuration={1500}
                           animationBegin={200}
                         >
@@ -244,7 +302,8 @@ export default function Analytics() {
                             backgroundColor: "hsl(var(--background))",
                             borderColor: "hsl(var(--border))",
                             borderRadius: "var(--radius)",
-                            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+                            boxShadow:
+                              "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
                           }}
                         />
                       </PieChart>
@@ -284,17 +343,22 @@ export default function Analytics() {
                             backgroundColor: "hsl(var(--background))",
                             borderColor: "hsl(var(--border))",
                             borderRadius: "var(--radius)",
-                            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+                            boxShadow:
+                              "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
                           }}
                         />
                         <Legend />
-                        <Bar dataKey="followers" fill="hsl(var(--primary))" name="Followers" animationDuration={1500} />
+                        <Bar
+                          dataKey="followers"
+                          fill="hsl(var(--primary))"
+                          name="Followers"
+                          animationDuration={1500}
+                        />
                         <Bar
                           dataKey="growth"
                           fill="#82ca9d"
                           name="Growth %"
                           animationDuration={1500}
-                          animationDelay={300}
                         />
                       </RechartsBarChart>
                     </ResponsiveContainer>
@@ -309,7 +373,9 @@ export default function Analytics() {
           <Card className="animated-card">
             <CardHeader>
               <CardTitle>Top Performing Content</CardTitle>
-              <CardDescription>Your most engaging posts across platforms.</CardDescription>
+              <CardDescription>
+                Your most engaging posts across platforms.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               {isLoading ? (
@@ -340,11 +406,17 @@ export default function Analytics() {
                             <post.platform.icon className="h-4 w-4 text-white" />
                           </div>
                           <div>
-                            <h3 className="font-medium">{post.platform.name}</h3>
-                            <p className="text-xs text-muted-foreground">{post.date}</p>
+                            <h3 className="font-medium">
+                              {post.platform.name}
+                            </h3>
+                            <p className="text-xs text-muted-foreground">
+                              {post.date}
+                            </p>
                           </div>
                         </div>
-                        <p className="text-sm mb-3 line-clamp-2">{post.content}</p>
+                        <p className="text-sm mb-3 line-clamp-2">
+                          {post.content}
+                        </p>
                         <div className="flex gap-4">
                           <div className="flex items-center gap-1 group cursor-pointer">
                             <Heart className="h-4 w-4 text-red-500 group-hover:scale-125 transition-all duration-300" />
@@ -359,7 +431,9 @@ export default function Analytics() {
                             <span className="text-sm">{post.shares}</span>
                           </div>
                           <div className="ml-auto">
-                            <span className="text-sm font-medium">{post.engagement}% Engagement</span>
+                            <span className="text-sm font-medium">
+                              {post.engagement}% Engagement
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -372,7 +446,7 @@ export default function Analytics() {
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }
 
 // Sample data
@@ -425,7 +499,7 @@ const metrics = [
       { name: "Apr", value: 128 },
     ],
   },
-]
+];
 
 const engagementData = [
   {
@@ -470,14 +544,14 @@ const engagementData = [
     comments: 35,
     shares: 20,
   },
-]
+];
 
 const platformData = [
   { name: "Twitter", value: 45, color: "#1DA1F2" },
   { name: "LinkedIn", value: 30, color: "#0077B5" },
   { name: "Discord", value: 15, color: "#5865F2" },
   { name: "Telegram", value: 10, color: "#0088CC" },
-]
+];
 
 const platformGrowthData = [
   {
@@ -500,13 +574,14 @@ const platformGrowthData = [
     followers: 750,
     growth: 5,
   },
-]
+];
 
 const topPosts = [
   {
     platform: { name: "Twitter", icon: Twitter, bgColor: "bg-blue-500" },
     date: "Mar 5, 2024",
-    content: "Just launched our new product! Check it out at example.com #launch #product",
+    content:
+      "Just launched our new product! Check it out at example.com #launch #product",
     image: "/placeholder.svg?height=400&width=600",
     likes: 245,
     comments: 42,
@@ -516,21 +591,26 @@ const topPosts = [
   {
     platform: { name: "LinkedIn", icon: Linkedin, bgColor: "bg-blue-700" },
     date: "Mar 3, 2024",
-    content: "Excited to announce that we've reached 10,000 customers! Thank you for your support. #milestone #growth",
+    content:
+      "Excited to announce that we've reached 10,000 customers! Thank you for your support. #milestone #growth",
     likes: 328,
     comments: 56,
     shares: 42,
     engagement: 7.2,
   },
   {
-    platform: { name: "Discord", icon: MessageCircle, bgColor: "bg-indigo-600" },
+    platform: {
+      name: "Discord",
+      icon: MessageCircle,
+      bgColor: "bg-indigo-600",
+    },
     date: "Mar 7, 2024",
-    content: "Join our community call this Friday at 3 PM EST to discuss upcoming features and provide feedback!",
+    content:
+      "Join our community call this Friday at 3 PM EST to discuss upcoming features and provide feedback!",
     image: "/placeholder.svg?height=400&width=600",
     likes: 156,
     comments: 48,
     shares: 24,
     engagement: 6.8,
   },
-]
-
+];

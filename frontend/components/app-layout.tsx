@@ -1,15 +1,24 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useEffect } from "react"
-import { usePathname } from "next/navigation"
-import { BarChart3, Calendar, Home, LogOut, Menu, MessageSquarePlus, Settings, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { ModeToggle } from "@/components/mode-toggle"
-import Link from "next/link"
-import { cn } from "@/lib/utils"
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import {
+  BarChart3,
+  Calendar,
+  Home,
+  LogOut,
+  Menu,
+  MessageSquarePlus,
+  Settings,
+  X,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { ModeToggle } from "@/components/mode-toggle";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: Home },
@@ -17,29 +26,29 @@ const navigation = [
   { name: "Scheduled Posts", href: "/scheduled", icon: Calendar },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
   { name: "Settings", href: "/settings", icon: Settings },
-]
+];
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
-  const [isMounted, setIsMounted] = useState(false)
-  const pathname = usePathname()
-  const [isMobileOpen, setIsMobileOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isMounted, setIsMounted] = useState(false);
+  const pathname = usePathname();
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsMounted(true)
+    setIsMounted(true);
     // Simulate loading for animation demonstration
     const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 500)
-    return () => clearTimeout(timer)
-  }, [])
+      setIsLoading(false);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
-    setIsMobileOpen(false)
-  }, [pathname])
+    setIsMobileOpen(false);
+  }, [pathname]);
 
   if (!isMounted) {
-    return null
+    return null;
   }
 
   return (
@@ -48,7 +57,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       <div className="hidden md:flex md:w-64 md:flex-col">
         <div className="flex flex-col flex-grow border-r border-border bg-card animate-fade-in">
           <div className="flex items-center h-16 flex-shrink-0 px-4 border-b border-border">
-            <h1 className="text-xl font-semibold animated-gradient-text">SocialSync</h1>
+            <h1 className="text-xl font-semibold animated-gradient-text">
+              SocialSync
+            </h1>
           </div>
           <div className="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto">
             <nav className="flex-1 px-2 space-y-1 staggered-fade-in">
@@ -57,14 +68,18 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                   key={item.name}
                   href={item.href}
                   className={cn(
-                    pathname === item.href ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted",
-                    "group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-all duration-200 animated-button",
+                    pathname === item.href
+                      ? "bg-primary/10 text-primary"
+                      : "text-muted-foreground hover:bg-muted",
+                    "group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-all duration-200 animated-button"
                   )}
                 >
                   <item.icon
                     className={cn(
-                      pathname === item.href ? "text-primary" : "text-muted-foreground group-hover:text-foreground",
-                      "mr-3 h-5 w-5 flex-shrink-0 transition-colors animated-icon",
+                      pathname === item.href
+                        ? "text-primary"
+                        : "text-muted-foreground group-hover:text-foreground",
+                      "mr-3 h-5 w-5 flex-shrink-0 transition-colors animated-icon"
                     )}
                     aria-hidden="true"
                   />
@@ -81,7 +96,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 </div>
                 <div className="ml-3">
                   <p className="text-sm font-medium">User Name</p>
-                  <p className="text-xs text-muted-foreground">user@example.com</p>
+                  <p className="text-xs text-muted-foreground">
+                    user@example.com
+                  </p>
                 </div>
               </div>
               <ModeToggle />
@@ -102,7 +119,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <SheetContent side="left" className="p-0 w-64">
             <div className="flex flex-col h-full">
               <div className="flex items-center h-16 flex-shrink-0 px-4 border-b border-border">
-                <h1 className="text-xl font-semibold animated-gradient-text">SocialSync</h1>
+                <h1 className="text-xl font-semibold animated-gradient-text">
+                  SocialSync
+                </h1>
                 <Button
                   variant="ghost"
                   size="icon"
@@ -119,14 +138,18 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                       key={item.name}
                       href={item.href}
                       className={cn(
-                        pathname === item.href ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted",
-                        "group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-all duration-200 animated-button",
+                        pathname === item.href
+                          ? "bg-primary/10 text-primary"
+                          : "text-muted-foreground hover:bg-muted",
+                        "group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-all duration-200 animated-button"
                       )}
                     >
                       <item.icon
                         className={cn(
-                          pathname === item.href ? "text-primary" : "text-muted-foreground group-hover:text-foreground",
-                          "mr-3 h-5 w-5 flex-shrink-0 transition-colors animated-icon",
+                          pathname === item.href
+                            ? "text-primary"
+                            : "text-muted-foreground group-hover:text-foreground",
+                          "mr-3 h-5 w-5 flex-shrink-0 transition-colors animated-icon"
                         )}
                         aria-hidden="true"
                       />
@@ -143,10 +166,16 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     </div>
                     <div className="ml-3">
                       <p className="text-sm font-medium">User Name</p>
-                      <p className="text-xs text-muted-foreground">user@example.com</p>
+                      <p className="text-xs text-muted-foreground">
+                        user@example.com
+                      </p>
                     </div>
                   </div>
-                  <Button variant="ghost" size="icon" className="animated-button">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="animated-button"
+                  >
                     <LogOut className="h-5 w-5 animated-icon hover-rotate" />
                   </Button>
                 </div>
@@ -154,7 +183,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
           </SheetContent>
         </Sheet>
-        <h1 className="text-xl font-semibold animated-gradient-text">SocialSync</h1>
+        <h1 className="text-xl font-semibold animated-gradient-text">
+          SocialSync
+        </h1>
         <ModeToggle />
       </div>
 
@@ -175,15 +206,16 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         </main>
       </div>
     </div>
-  )
+  );
 }
 
-function LoadingSpinner() {
+export function LoadingSpinner() {
   return (
     <div className="flex flex-col items-center">
       <div className="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-rotate-360"></div>
-      <p className="mt-4 text-muted-foreground animate-pulse-slow">Loading...</p>
+      <p className="mt-4 text-muted-foreground animate-pulse-slow">
+        Loading...
+      </p>
     </div>
-  )
+  );
 }
-

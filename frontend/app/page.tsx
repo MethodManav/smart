@@ -1,30 +1,55 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { MessageSquarePlus, Calendar, ArrowUpRight, BarChart3, Heart, MessageSquare, Repeat2 } from "lucide-react"
-import Link from "next/link"
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  MessageSquarePlus,
+  Calendar,
+  ArrowUpRight,
+  BarChart3,
+  Heart,
+  MessageSquare,
+  Repeat2,
+} from "lucide-react";
+import Link from "next/link";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function Dashboard() {
-  const [mounted, setMounted] = useState(false)
-  const [activeTab, setActiveTab] = useState("recent")
+  const [activeTab, setActiveTab] = useState("recent");
+  const router = useRouter();
+
+  const { user, error, isLoading } = useUser();
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    if (error) {
+      router.push("/api/auth/login");
+    }
+  }, [error, router]);
 
-  if (!mounted) {
-    return null
-  }
-
+  if (isLoading)
+    return (
+      <div>
+        <LoadingSpinner />
+      </div>
+    );
+  if (!user) return router.push("/api/auth/login");
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 animate-fade-in-down">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground">Manage your social media posts across multiple platforms.</p>
+          <p className="text-muted-foreground">
+            Manage your social media posts across multiple platforms.
+          </p>
         </div>
         <div className="flex gap-2">
           <Button asChild className="animated-button">
@@ -42,7 +67,12 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <Tabs defaultValue="recent" className="w-full animate-fade-in" value={activeTab} onValueChange={setActiveTab}>
+      <Tabs
+        defaultValue="recent"
+        className="w-full animate-fade-in"
+        value={activeTab}
+        onValueChange={setActiveTab}
+      >
         <TabsList className="grid w-full grid-cols-2 mb-4">
           <TabsTrigger value="recent" className="animated-button">
             Recent Posts
@@ -89,7 +119,11 @@ export default function Dashboard() {
                     <span>{platform.name}</span>
                   </div>
                   <span
-                    className={`text-xs px-2 py-1 rounded-full transition-all duration-300 ${platform.connected ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300" : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"}`}
+                    className={`text-xs px-2 py-1 rounded-full transition-all duration-300 ${
+                      platform.connected
+                        ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
+                        : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"
+                    }`}
                   >
                     {platform.connected ? "Connected" : "Disconnected"}
                   </span>
@@ -98,7 +132,12 @@ export default function Dashboard() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button variant="ghost" size="sm" className="w-full animated-button" asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full animated-button"
+              asChild
+            >
               <Link href="/settings">
                 Manage Connections
                 <ArrowUpRight className="ml-2 h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -131,7 +170,12 @@ export default function Dashboard() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button variant="ghost" size="sm" className="w-full animated-button" asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full animated-button"
+              asChild
+            >
               <Link href="/analytics">
                 View Full Analytics
                 <ArrowUpRight className="ml-2 h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -166,7 +210,12 @@ export default function Dashboard() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button variant="ghost" size="sm" className="w-full animated-button" asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full animated-button"
+              asChild
+            >
               <Link href="/create">
                 Schedule a Post
                 <ArrowUpRight className="ml-2 h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -176,7 +225,7 @@ export default function Dashboard() {
         </Card>
       </div>
     </div>
-  )
+  );
 }
 
 function PostCard({ post }: { post: any }) {
@@ -195,7 +244,11 @@ function PostCard({ post }: { post: any }) {
               <CardDescription className="text-xs">{post.date}</CardDescription>
             </div>
           </div>
-          <Button variant="ghost" size="icon" className="h-8 w-8 animated-button">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 animated-button"
+          >
             <ArrowUpRight className="h-4 w-4 animated-icon hover-scale" />
           </Button>
         </div>
@@ -216,21 +269,29 @@ function PostCard({ post }: { post: any }) {
         <div className="flex gap-3">
           <div className="flex items-center gap-1 text-muted-foreground group cursor-pointer">
             <Heart className="h-4 w-4 group-hover:text-red-500 group-hover:scale-125 transition-all duration-300" />
-            <span className="text-xs group-hover:text-red-500 transition-colors">{post.likes}</span>
+            <span className="text-xs group-hover:text-red-500 transition-colors">
+              {post.likes}
+            </span>
           </div>
           <div className="flex items-center gap-1 text-muted-foreground group cursor-pointer">
             <MessageSquare className="h-4 w-4 group-hover:text-blue-500 group-hover:scale-125 transition-all duration-300" />
-            <span className="text-xs group-hover:text-blue-500 transition-colors">{post.comments}</span>
+            <span className="text-xs group-hover:text-blue-500 transition-colors">
+              {post.comments}
+            </span>
           </div>
           <div className="flex items-center gap-1 text-muted-foreground group cursor-pointer">
             <Repeat2 className="h-4 w-4 group-hover:text-green-500 group-hover:scale-125 transition-all duration-300" />
-            <span className="text-xs group-hover:text-green-500 transition-colors">{post.shares}</span>
+            <span className="text-xs group-hover:text-green-500 transition-colors">
+              {post.shares}
+            </span>
           </div>
         </div>
-        <div className="text-xs text-muted-foreground">{post.engagement}% Engagement</div>
+        <div className="text-xs text-muted-foreground">
+          {post.engagement}% Engagement
+        </div>
       </CardFooter>
     </Card>
-  )
+  );
 }
 
 function ScheduledPostCard({ post }: { post: any }) {
@@ -246,7 +307,9 @@ function ScheduledPostCard({ post }: { post: any }) {
             </div>
             <div>
               <CardTitle className="text-sm">{post.platform.name}</CardTitle>
-              <CardDescription className="text-xs">{post.scheduledFor}</CardDescription>
+              <CardDescription className="text-xs">
+                {post.scheduledFor}
+              </CardDescription>
             </div>
           </div>
           <div className="px-2 py-1 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300 text-xs animate-pulse-slow">
@@ -275,37 +338,60 @@ function ScheduledPostCard({ post }: { post: any }) {
         </Button>
       </CardFooter>
     </Card>
-  )
+  );
 }
 
 // Sample data
-import { Twitter, Linkedin, MessageCircle, Send } from "lucide-react"
+import { Twitter, Linkedin, MessageCircle, Send } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { LoadingSpinner } from "@/components/app-layout";
 
 const platforms = [
   { name: "Twitter", icon: Twitter, connected: true, bgColor: "bg-blue-500" },
   { name: "LinkedIn", icon: Linkedin, connected: true, bgColor: "bg-blue-700" },
-  { name: "Discord", icon: MessageCircle, connected: false, bgColor: "bg-indigo-600" },
+  {
+    name: "Discord",
+    icon: MessageCircle,
+    connected: false,
+    bgColor: "bg-indigo-600",
+  },
   { name: "Telegram", icon: Send, connected: true, bgColor: "bg-sky-500" },
-]
+];
 
 const analytics = [
   { name: "Posts", value: "24", icon: MessageSquarePlus },
   { name: "Engagement", value: "12.4%", icon: BarChart3 },
   { name: "Likes", value: "842", icon: Heart },
   { name: "Comments", value: "128", icon: MessageSquare },
-]
+];
 
 const bestTimes = [
-  { platform: "Twitter", time: "9:00 AM - 11:00 AM", icon: Twitter, bgColor: "bg-blue-500" },
-  { platform: "LinkedIn", time: "1:00 PM - 3:00 PM", icon: Linkedin, bgColor: "bg-blue-700" },
-  { platform: "Discord", time: "6:00 PM - 8:00 PM", icon: MessageCircle, bgColor: "bg-indigo-600" },
-]
+  {
+    platform: "Twitter",
+    time: "9:00 AM - 11:00 AM",
+    icon: Twitter,
+    bgColor: "bg-blue-500",
+  },
+  {
+    platform: "LinkedIn",
+    time: "1:00 PM - 3:00 PM",
+    icon: Linkedin,
+    bgColor: "bg-blue-700",
+  },
+  {
+    platform: "Discord",
+    time: "6:00 PM - 8:00 PM",
+    icon: MessageCircle,
+    bgColor: "bg-indigo-600",
+  },
+];
 
 const recentPosts = [
   {
     platform: { name: "Twitter", icon: Twitter, bgColor: "bg-blue-500" },
     date: "Today, 10:30 AM",
-    content: "Just launched our new product! Check it out at example.com #launch #product",
+    content:
+      "Just launched our new product! Check it out at example.com #launch #product",
     image: "/placeholder.svg?height=400&width=600",
     likes: 42,
     comments: 12,
@@ -315,23 +401,29 @@ const recentPosts = [
   {
     platform: { name: "LinkedIn", icon: Linkedin, bgColor: "bg-blue-700" },
     date: "Yesterday, 2:15 PM",
-    content: "Excited to announce that we've reached 10,000 customers! Thank you for your support. #milestone #growth",
+    content:
+      "Excited to announce that we've reached 10,000 customers! Thank you for your support. #milestone #growth",
     likes: 128,
     comments: 24,
     shares: 16,
     engagement: 5.7,
   },
   {
-    platform: { name: "Discord", icon: MessageCircle, bgColor: "bg-indigo-600" },
+    platform: {
+      name: "Discord",
+      icon: MessageCircle,
+      bgColor: "bg-indigo-600",
+    },
     date: "2 days ago, 4:20 PM",
-    content: "Join our community call this Friday at 3 PM EST to discuss upcoming features and provide feedback!",
+    content:
+      "Join our community call this Friday at 3 PM EST to discuss upcoming features and provide feedback!",
     image: "/placeholder.svg?height=400&width=600",
     likes: 56,
     comments: 18,
     shares: 4,
     engagement: 2.8,
   },
-]
+];
 
 const scheduledPosts = [
   {
@@ -350,8 +442,8 @@ const scheduledPosts = [
   {
     platform: { name: "Telegram", icon: Send, bgColor: "bg-sky-500" },
     scheduledFor: "Mar 17, 3:30 PM",
-    content: "New tutorial: How to automate your social media posting schedule for maximum engagement",
+    content:
+      "New tutorial: How to automate your social media posting schedule for maximum engagement",
     image: "/placeholder.svg?height=400&width=600",
   },
-]
-
+];
