@@ -3,7 +3,7 @@
 import type React from "react";
 
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   BarChart3,
   Calendar,
@@ -12,6 +12,7 @@ import {
   Menu,
   MessageSquarePlus,
   Settings,
+  Settings2Icon,
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,13 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ModeToggle } from "@/components/mode-toggle";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "./ui/dropdown-menu";
+import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: Home },
@@ -33,6 +41,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+  const { user } = useUser();
 
   useEffect(() => {
     setIsMounted(true);
@@ -91,18 +101,41 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <div className="flex flex-shrink-0 p-4 border-t border-border">
             <div className="flex items-center w-full justify-between">
               <div className="flex items-center">
-                <div className="h-8 w-8 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white text-sm font-medium animate-pulse-slow">
-                  US
+                <div className="h-8 w-8 rounded-full overflow-hidden flex items-center justify-center">
+                  <img
+                    src={user?.picture ? user.picture : "/placeholder-logo.png"}
+                    alt="User Avatar"
+                    className="h-full w-full object-cover"
+                  />
                 </div>
                 <div className="ml-3">
-                  <p className="text-sm font-medium">User Name</p>
+                  <p className="text-sm font-medium">
+                    {user?.nickname ? user.nickname : "User"}
+                  </p>
                   <p className="text-xs text-muted-foreground">
-                    user@example.com
+                    {user ? user.email : "user"}
                   </p>
                 </div>
               </div>
-              <ModeToggle />
             </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Settings2Icon />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem>My Profile</DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    router.push("/api/auth/logout");
+                  }}
+                  className="text-red-500"
+                >
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>
