@@ -193,7 +193,21 @@ export default function AuthForm() {
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4">
+                                {
+                                    isLogin && (
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <Button variant="outline" type="button" className="w-full">
+                                                <Github className="mr-2 h-4 w-4" />
+                                                Github
+                                            </Button>
+                                            <Button variant="outline" type="button" className="w-full">
+                                                <Twitter className="mr-2 h-4 w-4" />
+                                                Twitter
+                                            </Button>
+                                        </div>
+                                    )
+                                }
+                                {/* <div className="grid grid-cols-2 gap-4">
                                     <Button variant="outline" type="button" className="w-full">
                                         <Github className="mr-2 h-4 w-4" />
                                         Github
@@ -202,7 +216,7 @@ export default function AuthForm() {
                                         <Twitter className="mr-2 h-4 w-4" />
                                         Twitter
                                     </Button>
-                                </div>
+                                </div> */}
                             </motion.form>
                         </AnimatePresence>
 
