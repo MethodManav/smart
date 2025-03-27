@@ -8,18 +8,60 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
-import { ArrowRight, Mail, Lock, User, Github, Twitter, Linkedin } from "lucide-react"
+import { ArrowRight, Mail, Lock, User, Github, Twitter } from "lucide-react"
+import SocialConnectionsDrawer from "./social-connections-drawer"
 
 export default function AuthForm() {
     const [isLogin, setIsLogin] = useState(true)
     const [isLoading, setIsLoading] = useState(false)
+    const [showConnections, setShowConnections] = useState(false)
+    const [userName, setUserName] = useState("")
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setIsLoading(true)
+
+        // Get the name value if it's a signup
+        if (!isLogin) {
+            const nameInput = document.getElementById("name") as HTMLInputElement
+            if (nameInput) {
+                setUserName(nameInput.value || "there")
+            }
+        }
+
         // Simulate API call
         await new Promise((resolve) => setTimeout(resolve, 1000))
         setIsLoading(false)
+
+        // Show success animation before showing connections drawer
+        if (!isLogin) {
+            // Create a success element
+            const formElement = document.querySelector("form")
+            if (formElement) {
+                const successElement = document.createElement("div")
+                successElement.className = "absolute inset-0 flex items-center justify-center bg-card"
+                successElement.innerHTML = `
+      <div class="flex flex-col items-center">
+        <svg class="w-16 h-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        <h3 class="mt-2 text-xl font-medium">Account Created!</h3>
+        <p class="text-sm text-muted-foreground">Let's complete your profile</p>
+      </div>
+    `
+                formElement.appendChild(successElement)
+
+                // Show success message briefly before showing connections drawer
+                setTimeout(() => {
+                    formElement.removeChild(successElement)
+                    setShowConnections(true)
+                }, 1500)
+            } else {
+                setShowConnections(true)
+            }
+        } else {
+            // Handle login success (redirect, etc.)
+        }
     }
 
     const toggleForm = () => {
@@ -125,17 +167,21 @@ export default function AuthForm() {
 
                                 <Button type="submit" className="w-full" disabled={isLoading}>
                                     {isLoading ? (
-                                        <motion.div
-                                            animate={{ rotate: 360 }}
-                                            transition={{
-                                                repeat: Number.POSITIVE_INFINITY,
-                                                duration: 1,
-                                                ease: "linear",
-                                            }}
-                                            className="mr-2 h-4 w-4 border-2 border-current border-t-transparent rounded-full"
-                                        />
-                                    ) : null}
-                                    {isLogin ? "Sign in" : "Create account"}
+                                        <motion.div className="flex items-center justify-center">
+                                            <motion.div
+                                                animate={{ rotate: 360 }}
+                                                transition={{
+                                                    repeat: Number.POSITIVE_INFINITY,
+                                                    duration: 1,
+                                                    ease: "linear",
+                                                }}
+                                                className="mr-2 h-4 w-4 border-2 border-current border-t-transparent rounded-full"
+                                            />
+                                            <span>{isLogin ? "Signing in..." : "Creating account..."}</span>
+                                        </motion.div>
+                                    ) : (
+                                        <>{isLogin ? "Sign in" : "Create account"}</>
+                                    )}
                                 </Button>
 
                                 <div className="relative my-6">
@@ -149,8 +195,8 @@ export default function AuthForm() {
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <Button variant="outline" type="button" className="w-full">
-                                        <Linkedin className="mr-2 h-4 w-4" />
-                                        Linkedin
+                                        <Github className="mr-2 h-4 w-4" />
+                                        Github
                                     </Button>
                                     <Button variant="outline" type="button" className="w-full">
                                         <Twitter className="mr-2 h-4 w-4" />
@@ -180,6 +226,12 @@ export default function AuthForm() {
                         </div>
                     </div>
                 </div>
+                {/* Social Connections Drawer */}
+                <SocialConnectionsDrawer
+                    isOpen={showConnections}
+                    onClose={() => setShowConnections(false)}
+                    userName={userName}
+                />
             </motion.div>
         </div>
     )
