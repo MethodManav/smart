@@ -60,85 +60,51 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   if (!isMounted) {
     return null;
   }
-
+  const hideSidebar = pathname === '/login';
   return (
     <div className="flex min-h-screen bg-background">
       {/* Desktop sidebar */}
-      <div className="hidden md:flex md:w-64 md:flex-col">
-        <div className="flex flex-col flex-grow border-r border-border bg-card animate-fade-in">
-          <div className="flex items-center h-16 flex-shrink-0 px-4 border-b border-border">
-            <h1 className="text-xl font-semibold animated-gradient-text">
-              SocialSync
-            </h1>
-          </div>
-          <div className="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto">
-            <nav className="flex-1 px-2 space-y-1 staggered-fade-in">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={cn(
-                    pathname === item.href
-                      ? "bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:bg-muted",
-                    "group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-all duration-200 animated-button"
-                  )}
-                >
-                  <item.icon
+      {!hideSidebar && (
+        <div className="hidden md:flex md:w-64 md:flex-col">
+          <div className="flex flex-col flex-grow border-r border-border bg-card animate-fade-in">
+            <div className="flex items-center h-16 flex-shrink-0 px-4 border-b border-border">
+              <h1 className="text-xl font-semibold animated-gradient-text">
+                SocialSync
+              </h1>
+            </div>
+            <div className="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto">
+              <nav className="flex-1 px-2 space-y-1 staggered-fade-in">
+                {navigation.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
                     className={cn(
                       pathname === item.href
-                        ? "text-primary"
-                        : "text-muted-foreground group-hover:text-foreground",
-                      "mr-3 h-5 w-5 flex-shrink-0 transition-colors animated-icon"
+                        ? "bg-primary/10 text-primary"
+                        : "text-muted-foreground hover:bg-muted",
+                      "group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-all duration-200 animated-button"
                     )}
-                    aria-hidden="true"
-                  />
-                  {item.name}
-                </Link>
-              ))}
-            </nav>
-          </div>
-          <div className="flex flex-shrink-0 p-4 border-t border-border">
-            <div className="flex items-center w-full justify-between">
-              <div className="flex items-center">
-                <div className="h-8 w-8 rounded-full overflow-hidden flex items-center justify-center">
-                  <img
-                    src={user?.picture ? user.picture : "/placeholder-logo.png"}
-                    alt="User Avatar"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm font-medium">
-                    {user?.nickname ? user.nickname : "User"}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {user ? user.email : "user"}
-                  </p>
-                </div>
-              </div>
+                  >
+                    <item.icon
+                      className={cn(
+                        pathname === item.href
+                          ? "text-primary"
+                          : "text-muted-foreground group-hover:text-foreground",
+                        "mr-3 h-5 w-5 flex-shrink-0 transition-colors animated-icon"
+                      )}
+                      aria-hidden="true"
+                    />
+                    {item.name}
+                  </Link>
+                ))}
+              </nav>
             </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Settings2Icon />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem>My Profile</DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => {
-                    localStorage.clear();
-                    sessionStorage.clear();
-                    router.push("/api/auth/logout");
-                  }}
-                  className="text-red-500"
-                >
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </div>
         </div>
-      </div>
+      )
+
+      }
+
 
       {/* Mobile menu */}
       <div className="md:hidden flex items-center h-16 px-4 border-b border-border bg-card w-full justify-between animate-fade-in">
