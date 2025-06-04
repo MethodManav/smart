@@ -21,27 +21,9 @@ import {
   Repeat2,
 } from "lucide-react";
 import Link from "next/link";
-import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("recent");
-  const router = useRouter();
-
-  const { user, error, isLoading } = useUser();
-
-  useEffect(() => {
-    if (error) {
-      router.push("/api/auth/login");
-    }
-  }, [error, router]);
-
-  if (isLoading)
-    return (
-      <div>
-        <LoadingSpinner />
-      </div>
-    );
-  if (!user) return router.push("/api/auth/login");
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 animate-fade-in-down">
