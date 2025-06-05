@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import { auth } from "twitter-api-sdk";
 import { config } from "../utiles/EnvParser";
+import axios from "axios";
+import Oauth from "oauth-1.0a";
+import * as crypto from "crypto";
 
 class AuthController {
   protected client_id: string;
@@ -19,27 +22,41 @@ class AuthController {
       scopes: ["tweet.read", "users.read", "offline.access"],
     });
   }
-  public async getAccessToken(req: any, res: any) {
+  public async checkHealth(req: Request, res: Response) {
+    res.send("Wroking Fine ");
+  }
+  public async requestToken(req: Request, res: Response) {
+    console.log();
+    const oauth = new Oauth({
+      consumer: {
+        key: config.x_client_id,
+        secret: config.x_client_secret,
+      },
+      signature_method: "HMAC-SHA1",
+      hash_function(base_string, key) {
+        return crypto
+          .createHmac("sha1", key)
+          .update(base_string)
+          .digest("base64");
+      },
+    });
     try {
-      const { code, state } = req.query;
-      if (state !== config.x_state)
-        return res.status(500).send("State isn't matching");
-      await this.authClient.requestAccessToken(code as string);
-      res.redirect("/tweets");
+      const request_data = {
+        url: `${config.x_url}request_token`,
+        method: "POST",
+        data: null,
+      };
+      const authHeader = oauth.toHeader(oauth.authorize(request_data));
+      const response = await axios.post(request_data.url, null, {
+        headers: {
+          ...authHeader,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
+      res.redirect(`${config.x_url}/authorize?${response.data}`);
     } catch (error) {
       console.error(error);
     }
-  }
-  public async login(req: Request, res: Response) {
-    const authUrl = this.authClient.generateAuthURL({
-      state: config.x_state,
-      code_challenge_method: "s256",
-    });
-    res.redirect(authUrl);
-  }
-
-  public async checkHealth(req: Request, res: Response) {
-    res.send("Wroking Fine ");
   }
 }
 
