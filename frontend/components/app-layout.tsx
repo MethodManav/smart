@@ -20,13 +20,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ModeToggle } from "@/components/mode-toggle";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "./ui/dropdown-menu";
-import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: Home },
@@ -42,7 +35,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const { user } = useUser();
 
   useEffect(() => {
     setIsMounted(true);
@@ -60,7 +52,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   if (!isMounted) {
     return null;
   }
-  const hideSidebar = pathname === '/login';
+  const hideSidebar = pathname === "/login";
   return (
     <div className="flex min-h-screen bg-background">
       {/* Desktop sidebar */}
@@ -101,10 +93,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
         </div>
-      )
-
-      }
-
+      )}
 
       {/* Mobile menu */}
       <div className="md:hidden flex items-center h-16 px-4 border-b border-border bg-card w-full justify-between animate-fade-in">
