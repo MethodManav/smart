@@ -1,15 +1,19 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Textarea } from "@/components/ui/textarea"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { format } from "date-fns"
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { format } from "date-fns";
 import {
   CalendarIcon,
   Check,
@@ -23,71 +27,88 @@ import {
   Repeat2,
   MessageSquare,
   Loader2,
-} from "lucide-react"
-import { cn } from "@/lib/utils"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const platforms = [
   { id: "twitter", name: "Twitter", icon: Twitter, color: "bg-blue-500" },
   { id: "linkedin", name: "LinkedIn", icon: Linkedin, color: "bg-blue-700" },
-  { id: "discord", name: "Discord", icon: MessageCircle, color: "bg-indigo-600" },
+  {
+    id: "discord",
+    name: "Discord",
+    icon: MessageCircle,
+    color: "bg-indigo-600",
+  },
   { id: "telegram", name: "Telegram", icon: Send, color: "bg-sky-500" },
-]
+];
 
 export default function CreatePost() {
-  const [content, setContent] = useState("")
-  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>(["twitter"])
-  const [date, setDate] = useState<Date>()
-  const [time, setTime] = useState("12:00")
-  const [scheduleType, setScheduleType] = useState("now")
-  const [image, setImage] = useState<string | null>(null)
-  const [charCount, setCharCount] = useState(0)
-  const [isUploading, setIsUploading] = useState(false)
-  const [mounted, setMounted] = useState(false)
+  const [content, setContent] = useState("");
+  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([
+    "twitter",
+  ]);
+  const [date, setDate] = useState<Date>();
+  const [time, setTime] = useState("12:00");
+  const [scheduleType, setScheduleType] = useState("now");
+  const [image, setImage] = useState<string | null>(null);
+  const [charCount, setCharCount] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(e.target.value)
-    setCharCount(e.target.value.length)
-  }
+    setContent(e.target.value);
+    setCharCount(e.target.value.length);
+  };
 
   const togglePlatform = (platformId: string) => {
     setSelectedPlatforms((prev) =>
-      prev.includes(platformId) ? prev.filter((id) => id !== platformId) : [...prev, platformId],
-    )
-  }
+      prev.includes(platformId)
+        ? prev.filter((id) => id !== platformId)
+        : [...prev, platformId]
+    );
+  };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0];
     if (file) {
-      setIsUploading(true)
+      setIsUploading(true);
       // Simulate upload delay
       setTimeout(() => {
-        setImage("/placeholder.svg?height=400&width=600")
-        setIsUploading(false)
-      }, 1500)
+        setImage("/placeholder.svg?height=400&width=600");
+        setIsUploading(false);
+      }, 1500);
     }
-  }
+  };
 
   const removeImage = () => {
-    setImage(null)
-  }
+    setImage(null);
+  };
 
   if (!mounted) {
-    return null
+    return null;
   }
 
   return (
     <div className="space-y-6">
       <div className="animate-fade-in-down">
         <h1 className="text-3xl font-bold tracking-tight">Create Post</h1>
-        <p className="text-muted-foreground">Compose and schedule your social media posts.</p>
+        <p className="text-muted-foreground">
+          Compose and schedule your social media posts.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -106,40 +127,62 @@ export default function CreatePost() {
                       onChange={handleContentChange}
                     />
                     <div
-                      className={`absolute bottom-2 right-2 text-xs ${charCount > 250 ? "text-amber-500" : charCount > 280 ? "text-red-500" : "text-muted-foreground"} transition-colors`}
+                      className={`absolute bottom-2 right-2 text-xs ${
+                        charCount > 250
+                          ? "text-amber-500"
+                          : charCount > 280
+                          ? "text-red-500"
+                          : "text-muted-foreground"
+                      } transition-colors`}
                     >
                       {charCount}/280
                     </div>
                   </div>
                 </div>
 
-                <div className="animate-fade-in" style={{ animationDelay: "100ms" }}>
+                <div
+                  className="animate-fade-in"
+                  style={{ animationDelay: "100ms" }}
+                >
                   <Label>Platforms</Label>
                   <div className="mt-2 flex flex-wrap gap-2">
                     {platforms.map((platform) => (
                       <Button
                         key={platform.id}
                         type="button"
-                        variant={selectedPlatforms.includes(platform.id) ? "default" : "outline"}
+                        variant={
+                          selectedPlatforms.includes(platform.id)
+                            ? "default"
+                            : "outline"
+                        }
                         className={cn(
                           "flex items-center gap-2 transition-all duration-300 animated-button",
                           selectedPlatforms.includes(platform.id)
                             ? platform.color + " text-white hover:opacity-90"
-                            : "hover:border-primary",
+                            : "hover:border-primary"
                         )}
                         onClick={() => togglePlatform(platform.id)}
                       >
                         <platform.icon
-                          className={`h-4 w-4 ${selectedPlatforms.includes(platform.id) ? "animate-bounce-light" : ""}`}
+                          className={`h-4 w-4 ${
+                            selectedPlatforms.includes(platform.id)
+                              ? "animate-bounce-light"
+                              : ""
+                          }`}
                         />
                         {platform.name}
-                        {selectedPlatforms.includes(platform.id) && <Check className="h-4 w-4 ml-1 animate-fade-in" />}
+                        {selectedPlatforms.includes(platform.id) && (
+                          <Check className="h-4 w-4 ml-1 animate-fade-in" />
+                        )}
                       </Button>
                     ))}
                   </div>
                 </div>
 
-                <div className="animate-fade-in" style={{ animationDelay: "200ms" }}>
+                <div
+                  className="animate-fade-in"
+                  style={{ animationDelay: "200ms" }}
+                >
                   <Label htmlFor="image">Media</Label>
                   <div className="mt-2">
                     {image ? (
@@ -163,7 +206,9 @@ export default function CreatePost() {
                         {isUploading ? (
                           <div className="flex flex-col items-center">
                             <Loader2 className="h-8 w-8 mx-auto text-primary animate-rotate-360" />
-                            <p className="text-sm text-muted-foreground mt-2">Uploading...</p>
+                            <p className="text-sm text-muted-foreground mt-2">
+                              Uploading...
+                            </p>
                           </div>
                         ) : (
                           <>
@@ -183,7 +228,9 @@ export default function CreatePost() {
                                   onChange={handleImageUpload}
                                 />
                               </Label>
-                              <p className="text-xs text-muted-foreground mt-1">PNG, JPG, GIF up to 10MB</p>
+                              <p className="text-xs text-muted-foreground mt-1">
+                                PNG, JPG, GIF up to 10MB
+                              </p>
                             </div>
                           </>
                         )}
@@ -192,7 +239,10 @@ export default function CreatePost() {
                   </div>
                 </div>
 
-                <div className="animate-fade-in" style={{ animationDelay: "300ms" }}>
+                <div
+                  className="animate-fade-in"
+                  style={{ animationDelay: "300ms" }}
+                >
                   <Label>Scheduling</Label>
                   <div className="mt-2 space-y-4">
                     <div className="flex items-center space-x-2">
@@ -225,11 +275,20 @@ export default function CreatePost() {
                                 className="w-full justify-start text-left font-normal mt-1 animated-button"
                               >
                                 <CalendarIcon className="mr-2 h-4 w-4 animated-icon" />
-                                {date ? format(date, "PPP") : <span>Pick a date</span>}
+                                {date ? (
+                                  format(date, "PPP")
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
                               </Button>
                             </PopoverTrigger>
                             <PopoverContent className="w-auto p-0 animate-scale-up">
-                              <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+                              <Calendar
+                                mode="single"
+                                selected={date}
+                                onSelect={setDate}
+                                initialFocus
+                              />
                             </PopoverContent>
                           </Popover>
                         </div>
@@ -251,11 +310,16 @@ export default function CreatePost() {
             </CardContent>
           </Card>
 
-          <div className="flex justify-end gap-2 animate-fade-in" style={{ animationDelay: "400ms" }}>
+          <div
+            className="flex justify-end gap-2 animate-fade-in"
+            style={{ animationDelay: "400ms" }}
+          >
             <Button variant="outline" className="animated-button">
               Save as Draft
             </Button>
-            <Button className="animated-button">{scheduleType === "now" ? "Post Now" : "Schedule Post"}</Button>
+            <Button className="animated-button">
+              {scheduleType === "now" ? "Post Now" : "Schedule Post"}
+            </Button>
           </div>
         </div>
 
@@ -263,8 +327,11 @@ export default function CreatePost() {
           <Card className="animated-card">
             <CardContent className="p-6">
               <h3 className="text-lg font-medium mb-4">Preview</h3>
-              <Tabs defaultValue={selectedPlatforms[0] || "twitter"} className="animate-fade-in">
-                <TabsList className="w-full">
+              <Tabs
+                defaultValue={selectedPlatforms[0] || "twitter"}
+                className="animate-fade-in"
+              >
+                {/* <TabsList className="w-full">
                   {platforms
                     .filter((p) => selectedPlatforms.includes(p.id))
                     .map((platform) => (
@@ -274,10 +341,12 @@ export default function CreatePost() {
                         className="flex items-center gap-1 animated-button"
                       >
                         <platform.icon className="h-4 w-4 animated-icon" />
-                        <span className="hidden sm:inline">{platform.name}</span>
+                        <span className="hidden sm:inline">
+                          {platform.name}
+                        </span>
                       </TabsTrigger>
                     ))}
-                </TabsList>
+                </TabsList> */}
                 {platforms.map((platform) => (
                   <TabsContent key={platform.id} value={platform.id}>
                     <div className="border rounded-md p-4 mt-2 transition-all duration-300 hover:shadow-md">
@@ -288,17 +357,24 @@ export default function CreatePost() {
                           <platform.icon className="h-4 w-4 text-white" />
                         </div>
                         <div>
-                          <div className="font-medium text-sm">Your Account</div>
+                          <div className="font-medium text-sm">
+                            Your Account
+                          </div>
                           <div className="text-xs text-muted-foreground">
                             {scheduleType === "now"
                               ? "Just now"
                               : date
-                                ? `Scheduled for ${format(date, "MMM d")} at ${time}`
-                                : "Scheduled for later"}
+                              ? `Scheduled for ${format(
+                                  date,
+                                  "MMM d"
+                                )} at ${time}`
+                              : "Scheduled for later"}
                           </div>
                         </div>
                       </div>
-                      <div className="text-sm mb-3">{content || "Your post content will appear here"}</div>
+                      <div className="text-sm mb-3">
+                        {content || "Your post content will appear here"}
+                      </div>
                       {image && (
                         <div className="rounded-md overflow-hidden mb-3">
                           <img
@@ -308,71 +384,14 @@ export default function CreatePost() {
                           />
                         </div>
                       )}
-                      <div className="flex gap-4 text-muted-foreground">
-                        <div className="flex items-center gap-1 group cursor-pointer">
-                          <Heart className="h-4 w-4 group-hover:text-red-500 group-hover:scale-125 transition-all duration-300" />
-                          <span className="text-xs group-hover:text-red-500 transition-colors">0</span>
-                        </div>
-                        <div className="flex items-center gap-1 group cursor-pointer">
-                          <MessageSquare className="h-4 w-4 group-hover:text-blue-500 group-hover:scale-125 transition-all duration-300" />
-                          <span className="text-xs group-hover:text-blue-500 transition-colors">0</span>
-                        </div>
-                        <div className="flex items-center gap-1 group cursor-pointer">
-                          <Repeat2 className="h-4 w-4 group-hover:text-green-500 group-hover:scale-125 transition-all duration-300" />
-                          <span className="text-xs group-hover:text-green-500 transition-colors">0</span>
-                        </div>
-                      </div>
                     </div>
                   </TabsContent>
                 ))}
               </Tabs>
             </CardContent>
           </Card>
-
-          <Card className="animated-card">
-            <CardContent className="p-6">
-              <h3 className="text-lg font-medium mb-4">Best Posting Times</h3>
-              <div className="space-y-3 animate-fade-in">
-                {platforms
-                  .filter((p) => selectedPlatforms.includes(p.id))
-                  .map((platform, index) => (
-                    <div
-                      key={platform.id}
-                      className="flex items-center justify-between transition-all duration-300 hover:bg-muted/50 p-2 rounded-md"
-                      style={{ animationDelay: `${index * 100}ms` }}
-                    >
-                      <div className="flex items-center gap-2">
-                        <div
-                          className={`w-8 h-8 rounded-full ${platform.color} flex items-center justify-center animated-icon hover-scale`}
-                        >
-                          <platform.icon className="h-4 w-4 text-white" />
-                        </div>
-                        <span>{platform.name}</span>
-                      </div>
-                      <Select defaultValue="option1">
-                        <SelectTrigger className="w-[140px] animated-button">
-                          <SelectValue placeholder="Select time" />
-                        </SelectTrigger>
-                        <SelectContent className="animate-scale-up">
-                          <SelectItem value="option1">9:00 AM</SelectItem>
-                          <SelectItem value="option2">12:00 PM</SelectItem>
-                          <SelectItem value="option3">3:00 PM</SelectItem>
-                          <SelectItem value="option4">6:00 PM</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  ))}
-              </div>
-              {selectedPlatforms.length === 0 && (
-                <div className="text-center text-muted-foreground py-4 animate-fade-in">
-                  Select platforms to see best posting times
-                </div>
-              )}
-            </CardContent>
-          </Card>
         </div>
       </div>
     </div>
-  )
+  );
 }
-
