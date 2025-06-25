@@ -4,5 +4,9 @@ const authRouter = Router();
 
 authRouter.get("/check", authController.checkHealth.bind(authController));
 authRouter.post("/login", authController.requestToken.bind(authController));
+authRouter.get(
+  "/accessToken",
+  authController.getAccessToken.bind(authController)
+);
 
 export { authRouter };
