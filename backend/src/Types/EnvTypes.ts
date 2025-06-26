@@ -5,4 +5,5 @@ export interface IConfig {
   x_state: string;
   x_url: string;
   redis_url: string;
+  redis_port: number;
 }
