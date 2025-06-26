@@ -1,26 +1,22 @@
-# Step 1: Build stage
-FROM node:18-alpine AS builder
-
-WORKDIR /app
-
-# Copy package files and install dependencies
-COPY package*.json ./
-RUN npm install
-
-# Copy source and build it
-COPY tsconfig.json ./
-COPY src ./src
-RUN npm run build
-
-# Step 2: Runtime stage
 FROM node:18-alpine
 
-WORKDIR /app
+# Set working directory
+WORKDIR /src
 
-# Copy only the compiled code and node_modules
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY package.json ./
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
+# Install dependencies
+RUN npm install --legacy-peer-deps
+
+# Copy the rest of the source files
+COPY . .
+
+# Build TypeScript code
+RUN npm run build
+
+# Expose port (change if your app runs on another port)
 EXPOSE 5000
-CMD ["node", "dist/app.js"]
+
+# Start the app
+CMD ["npm", "start"]
