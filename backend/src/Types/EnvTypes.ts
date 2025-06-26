@@ -4,4 +4,5 @@ export interface IConfig {
   x_callback: string;
   x_state: string;
   x_url: string;
+  redis_url: string;
 }
