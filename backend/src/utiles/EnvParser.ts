@@ -11,4 +11,5 @@ export let config: IConfig = {
   x_url: process.env.X_URL as string,
   redis_url: process.env.REDIS_URL as string,
   redis_port: parseInt(process.env.REDIS_PORT || "6379", 10),
+  client_url: process.env.CLIENT_URL as string,
 };

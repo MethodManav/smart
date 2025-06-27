@@ -105,7 +105,7 @@ class AuthController {
         secure: true,
         sameSite: "lax",
       });
-      res.redirect("https://smart-ochre-eight.vercel.app/login");
+      res.redirect(config.client_url);
     } catch (error) {
       console.error(error);
     }
