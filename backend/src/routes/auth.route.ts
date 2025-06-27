@@ -3,9 +3,9 @@ import { authController } from "../controller/AuthController";
 const authRouter = Router();
 
 authRouter.get("/check", authController.checkHealth.bind(authController));
-authRouter.post("/login", authController.requestToken.bind(authController));
+authRouter.post("/x-connect", authController.requestToken.bind(authController));
 authRouter.get(
-  "/accessToken",
+  "/x-callback",
   authController.getAccessToken.bind(authController)
 );
 
