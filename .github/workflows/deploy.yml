@@ -3,7 +3,7 @@ name: Deploy with Docker Compose
 on:
   push:
     paths:
-      -'backend/**'
+      - "backend/**"
     branches:
       - main
 
