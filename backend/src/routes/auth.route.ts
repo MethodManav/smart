@@ -8,5 +8,6 @@ authRouter.get(
   "/x-callback",
   authController.getAccessToken.bind(authController)
 );
+authRouter.get("/session", authController.getSession.bind(authController));
 
 export { authRouter };

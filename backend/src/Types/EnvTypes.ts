@@ -7,4 +7,8 @@ export interface IConfig {
   redis_url: string;
   redis_port: number;
   client_url: string;
+  linkedIn_url: string;
+  linkedIn_clientId: string;
+  linkedIn_secret: string;
+  linkedIn_redirect_url:string;
 }

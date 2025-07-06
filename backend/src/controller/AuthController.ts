@@ -5,6 +5,7 @@ import axios from "axios";
 import Oauth from "oauth-1.0a";
 import * as crypto from "crypto";
 import redis from "../app";
+import qs from "qs";
 
 class AuthController {
   protected client_id: string;
@@ -102,20 +103,115 @@ class AuthController {
       );
       res.cookie("sessionId", userData[2].split("=")[1], {
         httpOnly: true,
-        secure: true,
-        sameSite: "lax",
+        secure: false,
+        sameSite: "none",
       });
-      res.redirect(config.client_url);
+      const redirectUrl = config.client_url ?? `http://localhost:3000`;
+      res.redirect(redirectUrl);
     } catch (error) {
       console.error(error);
     }
   }
 
-  // public async postTweet(req:Request,res:Response){
-  //   try {
-  //   } catch (error) {
+  public async getSession(req: Request, res: Response): Promise<any> {
+    const sessionId = req.cookies.sessionId;
 
+    if (!sessionId) {
+      res.status(200).json({
+        message: "Not Connected to Twitter",
+      });
+    }
+    const sessionData = await redis.get(`session:${sessionId}`);
+    if (!sessionData) {
+      return res.status(401).json({ message: "Session not found" });
+    }
+    res.status(200).json({
+      message: "Twitter Is Connected",
+      succes: true,
+    });
+  }
+
+  // public async linkedInAccessCode(req: Request, res: Response) {
+  //   try {
+  //     console.log("ghj");
+  //     const queryParams = qs.stringify({
+  //       response_type: "code",
+  //       client_id: config.linkedIn_clientId,
+  //       redirect_uri: config.linkedIn_redirect_url,
+  //       scope: "r_liteprofile r_emailaddress w_member_social",
+  //     });
+  //     const AccessCode = await axios.get(
+  //       `${config.linkedIn_url}authorization?${queryParams}`
+  //     );
+  //     console.log(AccessCode.config.url, "code");
+  //     res.status(200).json({
+  //       messsage: AccessCode.config.url,
+  //     });
+  //   } catch (error) {
+  //     console.error(error);
+  //     res.status(500).json({
+  //       message: " Something went wrong ",
+  //     });
   //   }
+  //   // try {
+  //   //   // const tokenResponse = await axios.post(
+  //   //   //   `${config.linkedIn_url}accessToken`,
+  //   //   //   qs.stringify({
+  //   //   //     grant_type: "authorization_code",
+  //   //   //     code: code,
+  //   //   //     redirect_uri: process.env.LINKEDIN_REDIRECT_URI,
+  //   //   //     client_id: process.env.LINKEDIN_CLIENT_ID,
+  //   //   //     client_secret: process.env.LINKEDIN_CLIENT_SECRET,
+  //   //   //   }),
+  //   //   //   {
+  //   //   //     headers: {
+  //   //   //       "Content-Type": "application/x-www-form-urlencoded",
+  //   //   //     },
+  //   //   //   }
+  //   //   // );
+
+  //   //   // if (tokenResponse) {
+  //   //   //   return res.status(200).json({
+  //   //   //     success: true,
+  //   //   //     accessToken: tokenResponse.data.access_token,
+  //   //   //   });
+  //   //   // }
+
+  //   //   return res.status(400).json({
+  //   //     success: false,
+  //   //     message: "Something went wrong",
+  //   //   });
+  //   // } catch (error: any) {
+  //   //   console.error("LinkedIn token error:", error.message);
+  //   //   return res.status(500).json({
+  //   //     success: false,
+  //   //     message: "Internal server error",
+  //   //   });
+  //   // }
+  // }
+
+  // public async linkedInAccessToken(req: Request, res: Response) {
+  //   // try {
+  //   //   const code = req.query.code;
+  //   //   const tokenResponse = await axios.post(
+  //   //     `${config.linkedIn_url}accessToken`,
+  //   //     qs.stringify({
+  //   //       grant_type: "authorization_code",
+  //   //       code: code,
+  //   //       redirect_uri: process.env.LINKEDIN_REDIRECT_URI,
+  //   //       client_id: process.env.LINKEDIN_CLIENT_ID,
+  //   //       client_secret: process.env.LINKEDIN_CLIENT_SECRET,
+  //   //     }),
+  //   //     {
+  //   //       headers: {
+  //   //         "Content-Type": "application/x-www-form-urlencoded",
+  //   //       },
+  //   //     }
+  //   //   );
+  //   //   if (tokenResponse) {
+  //   //   }
+  //   // } catch (error) {}
+  //   res.send("Success");
   // }
 }
 
