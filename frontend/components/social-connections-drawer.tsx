@@ -37,10 +37,13 @@ export default function SocialConnectionsDrawer({
   //       setConnectedAccounts((prev) => [...prev, platform]);
   //     }, 2000);
   //   };
-  console.log(process.env.NEXT_PUBLIC_SERVER_LOCAL, "ghjkl");
   const connectWithTwitter = async () => {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_SERVER_LOCAL}auth/x-connect`
+      `${process.env.NEXT_PUBLIC_SERVER_LOCAL}auth/x-connect`,
+      {},
+      {
+        withCredentials: true,
+      }
     );
     if (response.data) {
       window.location.href = response.data;
