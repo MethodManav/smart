@@ -28,7 +28,6 @@ class AuthController {
     res.send("Wroking Fine ");
   }
   public async requestToken(req: Request, res: Response) {
-    console.log();
     const oauth = new Oauth({
       consumer: {
         key: config.x_client_id,
@@ -101,11 +100,14 @@ class AuthController {
           secret: userData[1].split("=")[1],
         })
       );
+      const isProd = config.node_env === "production";
+
       res.cookie("sessionId", userData[2].split("=")[1], {
         httpOnly: true,
-        secure: false,
-        sameSite: "none",
+        secure: isProd,
+        sameSite: isProd ? "none" : "lax",
       });
+
       const redirectUrl = config.client_url ?? `http://localhost:3000`;
       res.redirect(redirectUrl);
     } catch (error) {

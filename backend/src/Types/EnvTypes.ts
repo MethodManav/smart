@@ -1,4 +1,6 @@
 export interface IConfig {
+  node_env: string;
+  server_url: string;
   x_client_id: string;
   x_client_secret: string;
   x_callback: string;
@@ -10,5 +12,5 @@ export interface IConfig {
   linkedIn_url: string;
   linkedIn_clientId: string;
   linkedIn_secret: string;
-  linkedIn_redirect_url:string;
+  linkedIn_redirect_url: string;
 }

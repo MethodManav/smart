@@ -4,6 +4,8 @@ import { IConfig } from "../Types/EnvTypes";
 dotenv.config();
 
 export let config: IConfig = {
+  node_env: process.env.NODE_ENV as string,
+  server_url: process.env.SERVER_URL as string,
   x_client_id: process.env.X_CLIENT_ID as string,
   x_client_secret: process.env.X_CLIENT_SECRET as string,
   x_callback: process.env.X_CALLBACK as string,
