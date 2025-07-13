@@ -9,7 +9,12 @@ import { traceMiddleware } from "./utiles/middleware/TraceLogger";
 const app = express();
 const port = 5000;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: config.client_url,
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 const redisUrl = config.redis_url ?? "localhost";
 const redis = new Redis(redisUrl);
